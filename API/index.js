@@ -43,18 +43,18 @@ const beers = [{
 {
     id: 10,
     beer: 'Sour'
-},];
+}];
 
 // Get all beers
-app.get('/apis/beers', (req, res)=> {
+app.get('/api/beers', (req, res)=> {
     res.send(beers);
 });
 
 // Post
-app.post('/apis/beers', (req,res)=> {
+app.post('/api/beers', (req,res)=> {
     const mybeers = {
         id: beers.length + 1,
-        beer: req.body.beers
+        beer: req.body.beer
     }
 
     beers.push(mybeers);
@@ -62,7 +62,7 @@ app.post('/apis/beers', (req,res)=> {
 })
 
 // Put
-app.put('/apis/beers/:id', (req, res)=> {
+app.put('/api/beers/:id', (req, res)=> {
     const mybeers = beers.find(t => t.id === parseInt(req.params.id));
     if (!mybeers) return res.status(404).send('The beer with the ID was not found');
 
@@ -71,12 +71,14 @@ app.put('/apis/beers/:id', (req, res)=> {
 })
 
 // Delete
-app.delete('/apis/beers/:id', (req, res)=> {
+app.delete('/api/beers/:id', (req, res)=> {
     const mybeers = beers.find(t => t.id === parseInt(req.params.id));
     if (!mybeers) return res.status(404).send('The beer with the ID was not found');
 
     const index = indexOf(mybeers);
-    beers.splice(index, 1);
+    beers.splice(index,13);
+    beers.splice(index,14);
+    beers.splice(index,15);
     res.send(mybeers);
 });
 
