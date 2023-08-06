@@ -66,7 +66,7 @@ app.put('/api/beers/:id', (req, res)=> {
     const mybeers = beers.find(t => t.id === parseInt(req.params.id));
     if (!mybeers) return res.status(404).send('The beer with the ID was not found');
 
-    mybeers.beers = req.body.beers;
+    mybeers.beer = req.body.beer;
     res.send(mybeers);
 })
 
@@ -76,9 +76,7 @@ app.delete('/api/beers/:id', (req, res)=> {
     if (!mybeers) return res.status(404).send('The beer with the ID was not found');
 
     const index = indexOf(mybeers);
-    beers.splice(index,13);
-    beers.splice(index,14);
-    beers.splice(index,15);
+    beer.splice(index,13);
     res.send(mybeers);
 });
 
