@@ -52,32 +52,32 @@ app.get('/api/beers', (req, res)=> {
 
 // Post
 app.post('/api/beers', (req,res)=> {
-    const mybeers = {
+    const mybeer = {
         id: beers.length + 1,
         beer: req.body.beer
     }
 
-    beers.push(mybeers);
-    res.send(mybeers);
+    beers.push(mybeer);
+    res.send(mybeer);
 })
 
 // Put
 app.put('/api/beers/:id', (req, res)=> {
-    const mybeers = beers.find(t => t.id === parseInt(req.params.id));
-    if (!mybeers) return res.status(404).send('The beer with the ID was not found');
+    const mybeer = beers.find(t => t.id === parseInt(req.params.id));
+    if (!mybeer) return res.status(404).send('The beer with the ID was not found');
 
-    mybeers.beer = req.body.beer;
-    res.send(mybeers);
+    mybeer.beer = req.body.beer;
+    res.send(mybeer);
 })
 
 // Delete
 app.delete('/api/beers/:id', (req, res)=> {
-    const mybeers = beers.find(t => t.id === parseInt(req.params.id));
+    const mybeer = beers.find(t => t.id === parseInt(req.params.id));
     if (!mybeers) return res.status(404).send('The beer with the ID was not found');
 
-    const index = indexOf(mybeers);
-    beer.splice(index,13);
-    res.send(mybeers);
+    const index = beers.indexOf(mybeer);
+    beers.splice(index, 1);
+    res.send(mybeer);
 });
 
 
