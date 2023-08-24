@@ -4,8 +4,8 @@ formEl.addEventListener('submit', event => {
     event.preventDefault();
     const formData = new FormData(formEl);
     const data = Object.fromEntries(formData);
-    if(data.beer == "" || data.abv == "" || data.style == "" || data.brewery == "" ) {
-        $.toaster({ priority :'danger', title:'Error', message:'Oops something went wrong and did not save'});
+    if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
     }
     else {
         fetch('https://beersapc.onrender.com/api_productname/v1/beers', {
@@ -17,6 +17,5 @@ formEl.addEventListener('submit', event => {
         }).then(res => res.json())
           .then(data => console.log(data))
           .then(error => console.log(error))
-          $.toaster({ priority:'success', title:'Beers', message:'New Beer added'})
-    }
+        }
 })
