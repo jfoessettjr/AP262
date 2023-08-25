@@ -1,4 +1,4 @@
-const  beerForm = document.querySelector('.form')
+const  beerForm = document.querySelector('BeerForm')
 
 beerForm.addEventListener('submit', event =>{
     event.preventDefault();
