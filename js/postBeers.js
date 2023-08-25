@@ -1,4 +1,4 @@
-import FetchService from 'js/FetchService.js';
+import FetchService from './js/FetchService.js';
 
 /*-- Objects --*/
 const fetchService = new FetchService();
