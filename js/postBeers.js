@@ -1,23 +1,38 @@
-const beerForm = document.querySelector("#beerForm");
-if(beerForm) {
-    beerForm.addEventListener("submit", function(e) {
-        submitForm(e, this);
-    });
-}
+import FetchService from 'js/FetchService.js';
 
+/*-- Objects --*/
+const fetchService = new FetchService();
+/*-- /Objects --*/
+
+/*--Functions--*/
 async function submitForm(e, form) {
+    // 1. Prevent reloading page
     e.preventDefault();
+    // 2. Submit the form
+    // 2.1 User Interaction
     const btnSubmit = document.getElementById('btnSubmit');
     btnSubmit.disabled = true;
     setTimeout(() => btnSubmit.disabled = false, 2000);
+    // 2.2 Build JSON body
     const jsonFormData = buildJsonFormData(form);
+    // 2.3 Build Headers
     const headers = buildHeaders();
-    const response = await fetchService.performPostHttpRequest(`https://beersapc.onrender.com/api_productname/v1/beers`, headers, jsonFormData);
+    // 2.4 Request & Response
+    const response = await fetchService.performPostHttpRequest(`https://beersapc.onrender.com/api_productname/v1/beers/`, headers, jsonFormData); // Uses JSON Placeholder
     console.log(response);
+    // 2.5 Inform user of result
     if(response)
-        window.location = `/success.html?beer=${response.beer}&abv=${response.abv}&style=${response.style}$brewery=${response.brewery}`;
+        window.location = `/success.html?BeerName=${response.BeerName}&ABV=${response.ABV}&Style=${response.Style}&Brewery=${response.Brewery}`;
     else
-    alert(`An Error Occured.`);
+        alert(`An error occured.`);
+}
+
+function buildHeaders(authorization = null) {
+    const headers = {
+        "Content-Type": "application/json",
+        "Authorization": (authorization) ? authorization : "Bearer TOKEN_MISSING"
+    };
+    return headers;
 }
 
 function buildJsonFormData(form) {
@@ -27,22 +42,13 @@ function buildJsonFormData(form) {
     }
     return jsonFormData;
 }
+/*--/Functions--*/
 
-async function performPostHttpRequest(fetchlink, headers, body) {
-    if(!fetchlink || !headers || !body) {
-        throw new Error ("One or more POST request parameters was not passed.");
-    }
-    try {
-        const rawResponse = await fetch(fetchlink, {
-            method:'POST',
-            headers: headers,
-            body: JSON.stringify(body)
-        });
-        const content = await rawResponse.json();
-        return content;
-    }
-    catch(err) {
-        console.error(`Error at fetch POST: ${err}`);
-        throw err;
-    }
+/*--Event Listeners--*/
+const sampleForm = document.querySelector("#sampleForm");
+if(sampleForm) {
+    sampleForm.addEventListener("submit", function(e) {
+        submitForm(e, this);
+    });
 }
+/*--/Event Listeners--*/
