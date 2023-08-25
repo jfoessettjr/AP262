@@ -1,20 +1,48 @@
-const formEl = document.querySelector('.form');
+const beerForm = document.querySelector("#beerForm");
+if(beerForm) {
+    beerForm.addEventListener("submit", function(e) {
+        submitForm(e, this);
+    });
+}
 
-formEl.addEventListener('submit', event => {
-    const formData = new FormData(formEl);
-    const data = Object.fromEntries(formData);
-    if (!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
+async function submitForm(e, form) {
+    e.preventDefault();
+    const btnSubmit = document.getElementById('btnSubmit');
+    btnSubmit.disabled = true;
+    setTimeout(() => btnSubmit.disabled = false, 2000);
+    const jsonFormData = buildJsonFormData(form);
+    const headers = buildHeaders();
+    const response = await fetchService.performPostHttpRequest(`https://beersapc.onrender.com/api_productname/v1/beers`, headers, jsonFormData);
+    console.log(response);
+    if(response)
+        window.location = `/success.html?beer=${response.beer}&abv=${response.abv}&style=${response.style}$brewery=${response.brewery}`;
+    else
+    alert(`An Error Occured.`);
+}
+
+function buildJsonFormData(form) {
+    const jsonFormData = { };
+    for(const pair of new FormData(form)) {
+        jsonFormData[pair[0]] = pair[1];
     }
-    else {
-        fetch('https://beersapc.onrender.com/api_productname/v1/beers', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(res => res.json())
-          .then(data => console.log(data))
-          .then(error => console.log(error))
-        }
-})
+    return jsonFormData;
+}
+
+async function performPostHttpRequest(fetchlink, headers, body) {
+    if(!fetchlink || !headers || !body) {
+        throw new Error ("One or more POST request parameters was not passed.");
+    }
+    try {
+        const rawResponse = await fetch(fetchlink, {
+            method:'POST',
+            headers: headers,
+            body: JSON.stringify(body)
+        });
+        const content = await rawResponse.json();
+        return content;
+    }
+    catch(err) {
+        console.error(`Error at fetch POST: ${err}`);
+        throw err;
+    }
+}
